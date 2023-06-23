@@ -6,11 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 # Collect the metrics from the modem - LOGIN REQUIRED via Selenium
-def collect_modem_metrics_html(modem_url, modem_user, modem_pass, selenium_remote, selenium_driver_url):
-    url = modem_url
-    username = modem_user
-    password = modem_pass
-    
+def setup_webdriver(selenium_remote, selenium_driver_url):
     # Configure the Selenium WebDriver
     options = webdriver.ChromeOptions()
     options.add_argument("--headless")  # Run in headless mode without opening a browser window
@@ -23,6 +19,13 @@ def collect_modem_metrics_html(modem_url, modem_user, modem_pass, selenium_remot
     else:
         print("Using local Selenium WebDriver")
         driver = webdriver.Chrome(options=options)
+    return driver
+
+
+def collect_modem_metrics_html(modem_url, modem_user, modem_pass, driver):
+    url = modem_url
+    username = modem_user
+    password = modem_pass
     
     try:
         # Load the login page
@@ -55,14 +58,11 @@ def collect_modem_metrics_html(modem_url, modem_user, modem_pass, selenium_remot
         
         # Extract and print the available metrics
         soup = BeautifulSoup(driver.page_source, 'html.parser')
-        # Quit the WebDriver
-        driver.quit()
         # Return the BeautifulSoup object containing the metrics
         return soup
     except Exception as e:
         print("Error occurred during authentication:")
         print(str(e))
-        driver.quit()
         return ""
 
     

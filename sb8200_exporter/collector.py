@@ -21,6 +21,7 @@ class Collector(object):
         self.selenium_remote = selenium_remote
         self.selenium_driver_url = selenium_driver_url
         self._prefix = "sb8200_"
+        self.driver = utils.setup_webdriver(self.selenium_remote, self.selenium_driver_url)
 
     def headerify(self, text):
         text = text.strip().lower()
@@ -79,7 +80,7 @@ class Collector(object):
     def collect(self):
         metrics = []
 
-        h = bs4.BeautifulSoup(utils.collect_modem_metrics_html(self.address, self.username, self.password, self.selenium_remote, self.selenium_driver_url).prettify(), "html5lib")
+        h = bs4.BeautifulSoup(utils.collect_modem_metrics_html(self.address, self.username, self.password, self.driver).prettify(), "html5lib")
         global_state = {}
 
         for table in h.find_all("table"):
