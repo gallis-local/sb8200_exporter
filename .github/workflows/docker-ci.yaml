@@ -22,8 +22,8 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - run: |
-        docker build . -t ${{ secrets.DOCKER_REGISTRY }}/east/${{ secrets.IMAGE_NAME }}:latest
-        docker push ${{ secrets.DOCKER_REGISTRY }}/east/${{ secrets.IMAGE_NAME }}:latest
+        docker build . -t ${{ secrets.DOCKER_REPOSITORY }}/${{ secrets.DOCKER_LIBRARY }}/${{ secrets.IMAGE_NAME }}:latest
+        docker push ${{ secrets.DOCKER_REPOSITORY }}/${{ secrets.DOCKER_LIBRARY }}/${{ secrets.IMAGE_NAME }}:latest
 
     - uses: 8398a7/action-slack@v3
       name: Slack Notification
